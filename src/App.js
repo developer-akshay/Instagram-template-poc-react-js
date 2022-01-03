@@ -3,10 +3,20 @@ import { Card } from "react-bootstrap";
 import html2canvas from "html2canvas";
 import ReactDOM from "react-dom";
 import jsPdf from "jspdf";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { EditorState, convertToRaw } from "draft-js";
+import draftToHtml from "draftjs-to-html";
+import canvasToImage from "canvas-to-image";
+
 class App extends Component {
   constructor() {
     super();
-    this.state = { profileImage: null };
+    this.state = {
+      profileImage: null,
+      username: EditorState.createEmpty(),
+      desc: EditorState.createEmpty(),
+    };
     this.onInputchange = this.onInputchange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.onInputchangeImage = this.onInputchangeImage.bind(this);
@@ -31,43 +41,57 @@ class App extends Component {
   }
   printPDF = () => {
     const domElement = document.getElementById("photo");
+
     html2canvas(domElement, {
       onclone: (document) => {
         document.getElementById("print").style.visibility = "hidden";
       },
     }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPdf();
-      pdf.addImage(imgData, "JPEG", 10, 10);
-      pdf.save(`${new Date().toISOString()}.pdf`);
+      canvasToImage(canvas, {
+        name: "myImage",
+        type: "png",
+        quality: 1,
+      });
     });
   };
-
+  onEditorStateChange = (username) => {
+    this.setState({
+      username,
+    });
+  };
+  onDescChange = (desc) => {
+    this.setState({
+      desc,
+    });
+  };
   render() {
-    const { items } = this.state;
+    const { items, username, desc, options } = this.state;
 
     return (
       <div style={{ display: "flex", width: "100%", height: "100%" }}>
+        ;
         <div style={{ flexDirection: "row", width: "50%", height: "100%" }}>
           <div>
             <label>
               Username :
-              <input
-                name="username"
-                type="text"
-                value={this.state.fname}
-                onChange={this.onInputchange}
+              <Editor
+                editorState={username}
+                toolbarClassName="toolbarClassName"
+                wrapperClassName="wrapperClassName"
+                editorClassName="editorClassName"
+                onEditorStateChange={this.onEditorStateChange}
               />
             </label>
           </div>
           <div>
             <label>
               Description :
-              <input
-                name="description"
-                type="text"
-                value={this.state.description}
-                onChange={this.onInputchange}
+              <Editor
+                editorState={desc}
+                toolbarClassName="toolbarClassName"
+                wrapperClassName="wrapperClassName"
+                editorClassName="editorClassName"
+                onEditorStateChange={this.onDescChange}
               />
             </label>
           </div>
@@ -89,7 +113,6 @@ class App extends Component {
           </div>
         </div>
         <div
-          id="photo"
           style={{
             display: "flex",
             flexDirection: "row",
@@ -104,6 +127,7 @@ class App extends Component {
           }}
         >
           <div
+            id="photo"
             style={{
               width: "70%",
               height: "100%",
@@ -148,11 +172,21 @@ class App extends Component {
                     </div>
                     <div style={{ flexDirection: "row", width: "80%" }}>
                       <Card.Title>
-                        {this.state.username ? this.state.username : "Username"}
+                        {!this.state.username ? (
+                          "Username"
+                        ) : (
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: draftToHtml(
+                                convertToRaw(username.getCurrentContent())
+                              ),
+                            }}
+                          />
+                        )}
                       </Card.Title>
                     </div>
                   </div>
-                  <Card.Img
+                  {/* <Card.Img
                     variant="top"
                     style={{
                       height: 400,
@@ -161,11 +195,19 @@ class App extends Component {
                       borderWidth: 1,
                     }}
                     src={this.state.profileImage}
-                  />
+                  /> */}
                   <Card.Text>
-                    {this.state.description
-                      ? this.state.description
-                      : "Description"}
+                    {this.state.description ? (
+                      "Description"
+                    ) : (
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: draftToHtml(
+                            convertToRaw(desc.getCurrentContent())
+                          ),
+                        }}
+                      />
+                    )}
                   </Card.Text>
                 </Card.Body>
               </Card>
