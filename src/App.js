@@ -8,14 +8,18 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { EditorState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import canvasToImage from "canvas-to-image";
-
+import "./App.css";
 class App extends Component {
   constructor() {
     super();
     this.state = {
       profileImage: null,
       username: EditorState.createEmpty(),
+      usernametemp: true,
+      designation: EditorState.createEmpty(),
+      designationtemp: true,
       desc: EditorState.createEmpty(),
+      desctemp: true,
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
@@ -57,16 +61,30 @@ class App extends Component {
   onEditorStateChange = (username) => {
     this.setState({
       username,
+      usernametemp: false,
     });
   };
   onDescChange = (desc) => {
     this.setState({
       desc,
+      desctemp: false,
+    });
+  };
+
+  onDesignationChange = (designation) => {
+    this.setState({
+      designation,
+      designationtemp: false,
     });
   };
   render() {
-    const { items, username, desc, options } = this.state;
+    const { items, username, desc, options, designation } = this.state;
+    let user = draftToHtml(convertToRaw(username.getCurrentContent()));
 
+    let b = ` style="margin:0px"`;
+    let position = 2;
+    let output = [user.slice(0, position), b, user.slice(position)].join("");
+    console.log(output);
     return (
       <div style={{ display: "flex", width: "100%", height: "100%" }}>
         ;
@@ -80,6 +98,18 @@ class App extends Component {
                 wrapperClassName="wrapperClassName"
                 editorClassName="editorClassName"
                 onEditorStateChange={this.onEditorStateChange}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Designation :
+              <Editor
+                editorState={designation}
+                toolbarClassName="toolbarClassName"
+                wrapperClassName="wrapperClassName"
+                editorClassName="editorClassName"
+                onEditorStateChange={this.onDesignationChange}
               />
             </label>
           </div>
@@ -106,11 +136,6 @@ class App extends Component {
               />
             </label>
           </div>
-          <div>
-            <button id="print" onClick={this.printPDF}>
-              Download
-            </button>
-          </div>
         </div>
         <div
           style={{
@@ -131,31 +156,38 @@ class App extends Component {
             style={{
               width: "70%",
               height: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-              alignContent: "center",
-              position: "relative",
-              // backgroundColor: "blue",
+              margin: 10,
             }}
           >
             <div>
               <Card
-                className="text-center"
+                // className="text-center"
                 style={{
-                  width: "",
+                  width: "80%",
                   margin: 10,
                   backgroundColor: "white",
                   alignItems: "center",
                   justifyItems: "center",
+                  padding: "25px 15px",
+                  boxShadow: "rgb(0 0 0 / 13%) 0px 3px 10px 0px",
                 }}
               >
-                <Card.Body style={{ textAlign: "center" }}>
-                  <div style={{ display: "flex", width: "100%" }}>
+                <Card.Body>
+                  <div
+                    style={{
+                      display: "flex",
+                      width: "100%",
+                      height: "30%",
+                      justifyContent: "center",
+                    }}
+                  >
                     <div
                       style={{
                         flexDirection: "row",
                         width: "20%",
-                        height: "20%",
+                        height: "100%",
+                        justifyContent: "center",
+                        alignItems: "center",
                       }}
                     >
                       <Card.Img
@@ -166,39 +198,83 @@ class App extends Component {
                           borderRadius: 40,
                           borderWidth: 1,
                           border: 1,
+                          margin: 5,
+                          borderColor: "black",
                         }}
                         src={this.state.profileImage}
                       />
                     </div>
-                    <div style={{ flexDirection: "row", width: "80%" }}>
-                      <Card.Title>
-                        {!this.state.username ? (
-                          "Username"
-                        ) : (
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: draftToHtml(
-                                convertToRaw(username.getCurrentContent())
-                              ),
-                            }}
-                          />
-                        )}
-                      </Card.Title>
+                    <div
+                      style={{
+                        flexDirection: "row",
+                        width: "80%",
+
+                        height: "100%",
+                        paddingLeft: 5,
+                      }}
+                    >
+                      <div style={{ flexDirection: "column" }}>
+                        <div
+                          style={{
+                            flexDirection: "column",
+                            fontSize: 18,
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {this.state.usernametemp == true ? (
+                            "Username"
+                          ) : (
+                            <div
+                              className="htmlTag"
+                              style={{ margin: 0 }}
+                              dangerouslySetInnerHTML={{
+                                __html: `${user}`,
+                              }}
+                            />
+                          )}
+                          {console.log(
+                            draftToHtml(
+                              convertToRaw(username.getCurrentContent())
+                            )
+                          )}
+                        </div>
+                        <div
+                          style={{
+                            flexDirection: "column",
+                            fontSize: 14,
+                            color: "lightslategrey",
+                          }}
+                        >
+                          <Card.Title>
+                            {this.state.designationtemp == true ? (
+                              "Designation"
+                            ) : (
+                              <div
+                                className="htmlTag1"
+                                dangerouslySetInnerHTML={{
+                                  __html: draftToHtml(
+                                    convertToRaw(
+                                      designation.getCurrentContent()
+                                    )
+                                  ),
+                                }}
+                              />
+                            )}
+                          </Card.Title>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  {/* <Card.Img
-                    variant="top"
+
+                  <Card.Text
                     style={{
-                      height: 400,
-                      width: "90%",
-                      borderRadius: 16,
-                      borderWidth: 1,
+                      width: "98%",
+                      margin: 10,
+                      justifyContent: "center",
                     }}
-                    src={this.state.profileImage}
-                  /> */}
-                  <Card.Text>
-                    {this.state.description ? (
-                      "Description"
+                  >
+                    {this.state.desctemp == true ? (
+                      "Write description here ."
                     ) : (
                       <div
                         dangerouslySetInnerHTML={{
@@ -211,6 +287,17 @@ class App extends Component {
                   </Card.Text>
                 </Card.Body>
               </Card>
+            </div>
+            <div
+              style={{
+                width: "90%",
+
+                padding: 10,
+              }}
+            >
+              <button id="print" onClick={this.printPDF}>
+                Download
+              </button>
             </div>
           </div>
         </div>
