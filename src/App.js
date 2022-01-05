@@ -8,8 +8,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { EditorState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import canvasToImage from "canvas-to-image";
-import celebrate from "./assets/icons/celebrate.png";
-import love from "./assets/icons/love.png";
+
 import like from "./assets/icons/like.png";
 import "./App.css";
 class App extends Component {
@@ -23,10 +22,14 @@ class App extends Component {
       designationtemp: true,
       desc: EditorState.createEmpty(),
       desctemp: true,
+      comments: 0,
+      likes: 0,
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.onInputchangeImage = this.onInputchangeImage.bind(this);
+    this.handleChangeComments = this.handleChangeComments.bind(this);
+    this.handleChangeLikes = this.handleChangeLikes.bind(this);
   }
 
   onInputchange(event) {
@@ -80,8 +83,16 @@ class App extends Component {
       designationtemp: false,
     });
   };
+  handleChangeComments(event) {
+    console.log(event);
+    this.setState({ comments: event.target.value });
+  }
+  handleChangeLikes(event) {
+    this.setState({ likes: event.target.value });
+  }
   render() {
-    const { items, username, desc, options, designation } = this.state;
+    const { items, username, desc, options, designation, comments, likes } =
+      this.state;
     let user = draftToHtml(convertToRaw(username.getCurrentContent()));
 
     let b = ` style="margin:0px"`;
@@ -127,6 +138,23 @@ class App extends Component {
                 onEditorStateChange={this.onDescChange}
               />
             </label>
+          </div>
+          <div>
+            <label> {"Comments"}</label>
+            <input
+              type="number"
+              // value={this.state.comments}
+              placeholder="0"
+              onChange={this.handleChangeComments}
+            />
+          </div>
+          <div>
+            <label> {"Likes"}</label>
+            <input
+              type="number"
+              placeholder="0"
+              onChange={this.handleChangeLikes}
+            />
           </div>
           <div>
             <label>
@@ -307,62 +335,43 @@ class App extends Component {
                     >
                       <div
                         style={{
-                          paddingLeft: 10,
+                          paddingLeft: 6,
                           display: "flex",
                           flexDirection: "row",
-                          width: "30%",
-                          alignItems: "center",
+                          width: "50%",
                         }}
                       >
                         <img
                           style={{
-                            width: 25,
-                            height: 25,
+                            width: 100,
+                            height: 24,
                             flexDirection: "row",
                             alignItems: "center",
                           }}
                           src={like}
                           alt=""
                         ></img>
-                        <img
+                        <div
                           style={{
-                            width: 25,
-                            height: 25,
+                            fontSize: 14,
+                            color: "lightslategrey",
                             flexDirection: "row",
+                            paddingLeft: 10,
                           }}
-                          src={celebrate}
-                          alt=""
-                        ></img>
-                        <img
-                          style={{
-                            width: 25,
-                            height: 25,
-                            flexDirection: "row",
-                          }}
-                          src={love}
-                          alt=""
-                        ></img>
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 14,
-                          color: "lightslategrey",
-                          flexDirection: "row",
-                          paddingLeft: 35,
-                        }}
-                      >
-                        {"1039"}
+                        >
+                          {likes}
+                        </div>
                       </div>
                     </div>
                     <div
                       style={{
                         flexDirection: "row",
-                        width: "30%",
+                        width: "33%",
                         fontSize: 14,
                         color: "lightslategrey",
                       }}
                     >
-                      {"350 comments"}
+                      {comments} {" comments"}
                     </div>
                   </div>
                 </Card.Body>
