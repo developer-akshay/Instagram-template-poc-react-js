@@ -8,6 +8,9 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { EditorState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import canvasToImage from "canvas-to-image";
+import celebrate from "./assets/icons/celebrate.png";
+import love from "./assets/icons/love.png";
+import like from "./assets/icons/like.png";
 import "./App.css";
 class App extends Component {
   constructor() {
@@ -285,6 +288,83 @@ class App extends Component {
                       />
                     )}
                   </Card.Text>
+                  <div
+                    style={{
+                      flexDirection: "row",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      width: "100%",
+
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+
+                        flexDirection: "row",
+                      }}
+                    >
+                      <div
+                        style={{
+                          paddingLeft: 10,
+                          display: "flex",
+                          flexDirection: "row",
+                          width: "30%",
+                          alignItems: "center",
+                        }}
+                      >
+                        <img
+                          style={{
+                            width: 25,
+                            height: 25,
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                          src={like}
+                          alt=""
+                        ></img>
+                        <img
+                          style={{
+                            width: 25,
+                            height: 25,
+                            flexDirection: "row",
+                          }}
+                          src={celebrate}
+                          alt=""
+                        ></img>
+                        <img
+                          style={{
+                            width: 25,
+                            height: 25,
+                            flexDirection: "row",
+                          }}
+                          src={love}
+                          alt=""
+                        ></img>
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 14,
+                          color: "lightslategrey",
+                          flexDirection: "row",
+                          paddingLeft: 35,
+                        }}
+                      >
+                        {"1039"}
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        flexDirection: "row",
+                        width: "30%",
+                        fontSize: 14,
+                        color: "lightslategrey",
+                      }}
+                    >
+                      {"350 comments"}
+                    </div>
+                  </div>
                 </Card.Body>
               </Card>
             </div>
