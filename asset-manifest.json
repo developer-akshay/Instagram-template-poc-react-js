@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/Instagram-template-poc-react-js/static/css/main.b60f8ec8.css",
-    "main.js": "/Instagram-template-poc-react-js/static/js/main.15284641.js",
+    "main.js": "/Instagram-template-poc-react-js/static/js/main.99bad7dc.js",
     "static/js/703.76c5ccbd.chunk.js": "/Instagram-template-poc-react-js/static/js/703.76c5ccbd.chunk.js",
     "static/js/203.023a46e8.chunk.js": "/Instagram-template-poc-react-js/static/js/203.023a46e8.chunk.js",
     "static/js/787.10b13c6e.chunk.js": "/Instagram-template-poc-react-js/static/js/787.10b13c6e.chunk.js",
-    "static/media/celebrate.png": "/Instagram-template-poc-react-js/static/media/celebrate.50c5f51b5b25d7d4f611.png",
+    "static/media/like.png": "/Instagram-template-poc-react-js/static/media/like.7519ae8da182f3bb0e99.png",
     "index.html": "/Instagram-template-poc-react-js/index.html",
     "main.b60f8ec8.css.map": "/Instagram-template-poc-react-js/static/css/main.b60f8ec8.css.map",
-    "main.15284641.js.map": "/Instagram-template-poc-react-js/static/js/main.15284641.js.map",
+    "main.99bad7dc.js.map": "/Instagram-template-poc-react-js/static/js/main.99bad7dc.js.map",
     "703.76c5ccbd.chunk.js.map": "/Instagram-template-poc-react-js/static/js/703.76c5ccbd.chunk.js.map",
     "203.023a46e8.chunk.js.map": "/Instagram-template-poc-react-js/static/js/203.023a46e8.chunk.js.map",
     "787.10b13c6e.chunk.js.map": "/Instagram-template-poc-react-js/static/js/787.10b13c6e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b60f8ec8.css",
-    "static/js/main.15284641.js"
+    "static/js/main.99bad7dc.js"
   ]
 }
