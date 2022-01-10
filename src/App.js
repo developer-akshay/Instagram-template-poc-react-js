@@ -24,12 +24,14 @@ class App extends Component {
       desctemp: true,
       comments: 0,
       likes: 0,
+      chkbox: false,
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.onInputchangeImage = this.onInputchangeImage.bind(this);
     this.handleChangeComments = this.handleChangeComments.bind(this);
     this.handleChangeLikes = this.handleChangeLikes.bind(this);
+    this.handleChangeChk = this.handleChangeChk.bind(this);
   }
 
   onInputchange(event) {
@@ -90,9 +92,22 @@ class App extends Component {
   handleChangeLikes(event) {
     this.setState({ likes: event.target.value });
   }
+  handleChangeChk(event) {
+    this.setState({
+      chkbox: !this.state.chkbox,
+    });
+  }
   render() {
-    const { items, username, desc, options, designation, comments, likes } =
-      this.state;
+    const {
+      items,
+      username,
+      desc,
+      options,
+      designation,
+      comments,
+      likes,
+      chkbox,
+    } = this.state;
     let user = draftToHtml(convertToRaw(username.getCurrentContent()));
 
     let b = ` style="margin:0px"`;
@@ -139,23 +154,7 @@ class App extends Component {
               />
             </label>
           </div>
-          <div>
-            <label> {"Comments"}</label>
-            <input
-              type="number"
-              // value={this.state.comments}
-              placeholder="0"
-              onChange={this.handleChangeComments}
-            />
-          </div>
-          <div>
-            <label> {"Likes"}</label>
-            <input
-              type="number"
-              placeholder="0"
-              onChange={this.handleChangeLikes}
-            />
-          </div>
+
           <div>
             <label>
               Profile image :
@@ -166,6 +165,35 @@ class App extends Component {
                 onChange={this.onInputchangeImage}
               />
             </label>
+          </div>
+          <div>
+            <label>Dou you want to add comment and likes ?</label>
+            <input
+              type="checkbox"
+              defaultChecked={this.state.chkbox}
+              onChange={this.handleChangeChk}
+            />
+            {chkbox === true ? (
+              <div>
+                <div>
+                  <label> {"Comments"}</label>
+                  <input
+                    type="number"
+                    // value={this.state.comments}
+                    placeholder="0"
+                    onChange={this.handleChangeComments}
+                  />
+                </div>
+                <div>
+                  <label> {"Likes"}</label>
+                  <input
+                    type="number"
+                    placeholder="0"
+                    onChange={this.handleChangeLikes}
+                  />
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
         <div
@@ -316,64 +344,66 @@ class App extends Component {
                       />
                     )}
                   </Card.Text>
-                  <div
-                    style={{
-                      flexDirection: "row",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      width: "100%",
-
-                      flexWrap: "wrap",
-                    }}
-                  >
+                  {chkbox === true ? (
                     <div
                       style={{
-                        display: "flex",
-
                         flexDirection: "row",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        width: "100%",
+
+                        flexWrap: "wrap",
                       }}
                     >
                       <div
                         style={{
-                          paddingLeft: 6,
                           display: "flex",
+
                           flexDirection: "row",
-                          width: "50%",
                         }}
                       >
-                        <img
-                          style={{
-                            width: 100,
-                            height: 24,
-                            flexDirection: "row",
-                            alignItems: "center",
-                          }}
-                          src={like}
-                          alt=""
-                        ></img>
                         <div
                           style={{
-                            fontSize: 14,
-                            color: "lightslategrey",
+                            paddingLeft: 6,
+                            display: "flex",
                             flexDirection: "row",
-                            paddingLeft: 10,
+                            width: "50%",
                           }}
                         >
-                          {likes}
+                          <img
+                            style={{
+                              width: 100,
+                              height: 24,
+                              flexDirection: "row",
+                              alignItems: "center",
+                            }}
+                            src={like}
+                            alt=""
+                          ></img>
+                          <div
+                            style={{
+                              fontSize: 14,
+                              color: "lightslategrey",
+                              flexDirection: "row",
+                              paddingLeft: 10,
+                            }}
+                          >
+                            {likes}
+                          </div>
                         </div>
                       </div>
+                      <div
+                        style={{
+                          flexDirection: "row",
+                          width: "33%",
+                          fontSize: 14,
+                          color: "lightslategrey",
+                        }}
+                      >
+                        {comments} {" comments"}
+                      </div>
                     </div>
-                    <div
-                      style={{
-                        flexDirection: "row",
-                        width: "33%",
-                        fontSize: 14,
-                        color: "lightslategrey",
-                      }}
-                    >
-                      {comments} {" comments"}
-                    </div>
-                  </div>
+                  ) : null}
                 </Card.Body>
               </Card>
             </div>
